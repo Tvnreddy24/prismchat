@@ -16,11 +16,12 @@ export function AccessLock({ t, backendUrl, onUnlocked }: Props) {
   const [error, setError] = useState('')
 
   const submit = async () => {
-    if (!code || busy) return
+    const trimmed = code.trim()
+    if (!trimmed || busy) return
     setBusy(true)
     setError('')
     try {
-      await verifyAccess(backendUrl, code)
+      await verifyAccess(backendUrl, trimmed)
       onUnlocked()
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Access denied')
@@ -52,7 +53,7 @@ export function AccessLock({ t, backendUrl, onUnlocked }: Props) {
         <button
           type="button"
           onClick={submit}
-          disabled={busy || !code}
+          disabled={busy || !code.trim()}
           className="mt-3 w-full rounded-xl bg-navy-800 px-3 py-2.5 text-[14px] font-medium text-white hover:bg-navy-700 disabled:opacity-60"
         >
           {busy ? '…' : t.accessBtn}

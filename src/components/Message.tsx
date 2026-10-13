@@ -144,14 +144,27 @@ export const MessageRow = memo(function MessageRow({
           )}
 
           {isUser ? (
-            <div
-              className={cn(
-                'max-w-[85%] rounded-[1.25rem] rounded-tr-md border border-line bg-surface px-4 py-2.5',
-                'text-[15px] leading-7 whitespace-pre-wrap break-words shadow-[var(--shadow-sm)]',
-              )}
-            >
-              {message.content}
-            </div>
+            <>
+              <div
+                className={cn(
+                  'max-w-[85%] rounded-[1.25rem] rounded-tr-md border border-line bg-surface px-4 py-2.5',
+                  'text-[15px] leading-7 whitespace-pre-wrap break-words shadow-[var(--shadow-sm)]',
+                )}
+              >
+                {message.content}
+              </div>
+              {/* ChatGPT-type: hover → copy icon, click → query copied, re-ask ready */}
+              <button
+                type="button"
+                onClick={handleCopy}
+                title={copied ? t.copied : t.copy}
+                aria-label={copied ? t.copied : t.copy}
+                className="icon-btn mt-1 size-7 text-faint opacity-100 transition-opacity hover:text-ink sm:opacity-0 sm:group-hover:opacity-100 sm:focus-visible:opacity-100"
+              >
+                {copied ? <CheckIcon size={15} /> : <CopyIcon size={15} />}
+              </button>
+            </>
+
           ) : message.streaming && !message.content ? (
             <ThinkingBubble label={t.thinking} />
           ) : (
